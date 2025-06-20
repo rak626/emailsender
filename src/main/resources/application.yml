@@ -1,0 +1,38 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: my-application
+  data:
+    mongodb:
+      uri: mongodb://mongo_admin:mongo_pass@localhost:27017/email_sender?authSource=admin
+app:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    encrypted:
+      password: aft72YNYupd8bpKzBW2KVou74N1nKqltnvxv3CYJh5o=
+      username: TFmODxomgEY8XpBOxtwcimDU6CNYY3FbJaKBasMvbIM=
+    secret:
+      key: MySuperSecretKey
+    auth: true
+    ssl: false
+    protocol: smtp
+    starttls:
+      enable: true
+mongock:
+  enabled: true
+  logging:
+    level:
+      io:
+        mongock: DEBUG
+  migration-scan-package:
+    - com.rakesh.emailsender
+  mongo-db:
+    write-concern:
+      w: majority
+      wTimeoutMs: 1000
+      journal: true
+    read-concern: majority
+    read-preference: primary
