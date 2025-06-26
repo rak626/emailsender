@@ -1,9 +1,14 @@
 package com.rakesh.emailsender.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rakesh.emailsender.dto.EmailRequest;
+import com.rakesh.emailsender.dto.JobApplication;
 import com.rakesh.emailsender.dto.PersonalDetails;
+import com.rakesh.emailsender.entity.Application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +24,7 @@ public class SenderService {
     // For now, it is empty as the EmailService handles the email sending logic.
     // You can add methods here if you need to process or log email sending requests.
     private final EmailService emailService;
+    private final ObjectMapper objectMapper;
 
     public List<String> processEmailRequest(EmailRequest request) {
         List<CompletableFuture<String>> futures = new ArrayList<>();
@@ -37,5 +43,4 @@ public class SenderService {
                 .map(CompletableFuture::join) // still non-blocking, just waits if needed
                 .collect(Collectors.toList());
     }
-
 }

@@ -35,6 +35,7 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
     private final TemplateService templateService;
+    private final ApplicationService appService;
 
     @Async
     public CompletableFuture<String> sendEmail(PersonalDetails personalDetails, JobApplication jobApplication) {
@@ -51,9 +52,11 @@ public class EmailService {
             log.info("Email sent successfully to: {}, at {}",
                     jobApplication.getRecipientDesc().getEmails(),
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            appService.createApplicationEntry(personalDetails, jobApplication, true);
             return CompletableFuture.completedFuture("Email sent successfully! to: " + jobApplication.getRecipientDesc().getEmails());
         } catch (Exception ex) {
             log.error("Failed to send email: {}", ex.getMessage(), ex);
+            appService.createApplicationEntry(personalDetails, jobApplication, false);
             return CompletableFuture.completedFuture("Failed to send email: " + ex.getMessage());
         }
     }
